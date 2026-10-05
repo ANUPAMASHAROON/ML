@@ -1,0 +1,57 @@
+# Import Required Libraries
+import pandas as pd
+import math
+import matplotlib.pyplot as plt
+from sklearn.tree import DecisionTreeClassifier, plot_tree
+# Read Dataset
+data = pd.read_csv("play.csv")
+# Function to Calculate Entropy
+def find_entropy(target):
+entropy = 0
+counts = target.value_counts()
+for count in counts:
+p = count / len(target)
+entropy += -p * math.log2(p)
+return round(entropy, 3)
+# Function to Calculate Information Gain
+def information_gain(data, feature):
+total_entropy = find_entropy(data["play"])
+weighted_entropy = 0
+for value in data[feature].unique():
+subset = data[data[feature] == value]
+weight = len(subset) / len(data)
+weighted_entropy += weight * find_entropy(subset["play"])
+ig = total_entropy - weighted_entropy
+return round(ig, 3)
+# Display Entropy and Information Gain of Each Feature
+def entropy_and_infogain(datax, feature):
+print(f"Feature : {feature}")
+for value in datax[feature].unique():
+subset = datax[datax[feature] == value]
+print(f"Entropy ({feature} = {value}) : {find_entropy(subset['play'])}")
+print(f"Information Gain ({feature}) : {information_gain(datax, feature)}\n")
+# ENTIRE DATASET
+print("Entropy of Entire Dataset :", find_entropy(data["play"]))
+print("=" * 30)
+entropy_and_infogain(data, "outlook")
+entropy_and_infogain(data, "temp")
+entropy_and_infogain(data, "humidity")
+entropy_and_infogain(data, "windy")
+# Prepare Data for Decision Tree
+X = pd.get_dummies(data.drop(columns=["play"]))
+y = data["play"]
+# Train Decision Tree (ID3)
+clf = DecisionTreeClassifier(criterion="entropy",random_state=42)
+clf.fit(X, y)
+# Display Decision Tree
+plt.figure(figsize=(18, 10))
+plot_tree(
+clf,
+feature_names=X.columns,
+class_names=clf.classes_,
+filled=True,
+rounded=True,
+fontsize=10
+)
+plt.title("Decision Tree using ID3 Algorithm", fontsize=16)
+plt.show()

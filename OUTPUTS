@@ -1,0 +1,32 @@
+Output:
+Predicted Prices: [91.91129032 50.80483871]
+Actual Prices : [95, 55]
+Regression Metrics:
+Mean Absolute Error (MAE) : 3.64
+Mean Squared Error (MSE) : 13.57
+Root Mean Squared Error (RMSE): 3.68
+Predicted price for new house: ₹ 87.34 Thousands
+
+
+Output:
+Entropy of Entire Dataset : 0.94
+==============================
+Feature : outlook
+Entropy (outlook = Sunny) : 0.971
+Entropy (outlook = Overcast) : 0.0
+Entropy (outlook = Rain) : 0.971
+Information Gain (outlook) : 0.246
+Feature : temp
+Entropy (temp = Hot) : 1.0
+Entropy (temp = Mild) : 0.918
+Entropy (temp = Cool) : 0.811
+Information Gain (temp) : 0.029
+Feature : humidity
+Entropy (humidity = High) : 0.985
+Entropy (humidity = Normal) : 0.592
+Information Gain (humidity) : 0.151
+Feature : windy
+Entropy (windy = Weak) : 0.811
+Entropy (windy = Strong) : 1.0
+Information Gain (windy) : 0.048
+

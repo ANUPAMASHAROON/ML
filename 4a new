@@ -1,0 +1,30 @@
+import pandas as pd,math,matplotlib.pyplot as plt
+from sklearn.tree import DecisionTreeClassifier,plot_tree
+
+d=pd.read_csv("play.csv")
+
+def e(y):
+ p=y.value_counts()/len(y)
+ return round(-sum(p*p.map(math.log2)),3)
+
+def g(f):
+ return round(e(d.play)-sum(len(s:=d[d[f]==v])/len(d)*e(s.play)
+ for v in d[f].unique()),3)
+
+print("Entropy of Entire Dataset :",e(d.play))
+print("="*30)
+
+for f in ["outlook","temp","humidity","windy"]:
+ print("Feature :",f)
+ for v in d[f].unique():
+  print(f"Entropy ({f} = {v}) :",e(d[d[f]==v].play))
+  print(f"Information Gain ({f}) :",g(f),"\n")
+
+X=pd.get_dummies(d.drop(columns="play"))
+c=DecisionTreeClassifier(criterion="entropy",random_state=42).fit(X,d.play)
+
+plt.figure(figsize=(18,10))
+plot_tree(c,feature_names=X.columns,class_names=c.classes_,
+filled=True,rounded=True,fontsize=10)
+plt.title("Decision Tree using ID3 Algorithm",fontsize=16)
+plt.show()

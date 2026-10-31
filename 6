@@ -1,0 +1,47 @@
+import pandas as pd
+from sklearn.model_selection import train_test_split
+from sklearn.ensemble import RandomForestClassifier
+from sklearn.metrics import accuracy_score
+
+df = pd.DataFrame({
+    'Weight':[150,160,140,130,170,180,185,190,220,250,240,230,110,120,115,125],
+    'Color':[0,0,0,0,1,1,1,1,2,2,2,2,3,3,3,3],
+    'Fruit':['Apple']*4+['Orange']*4+['Mango']*4+['Banana']*4
+})
+
+X,y = df[['Weight','Color']],df['Fruit']
+a,b,c,d = train_test_split(X,y,test_size=0.25,random_state=42)
+
+m = RandomForestClassifier(n_estimators=100,random_state=42)
+m.fit(a,c)
+p = m.predict(b)
+
+print("Actual Fruits:",list(d))
+print("Predicted Fruits:",list(p))
+print("Accuracy =",round(accuracy_score(d,p)*100,2),"%")
+
+new = pd.DataFrame([[115,3]],columns=['Weight','Color'])
+print("Predicted Fruit =",m.predict(new)[0])
+import pandas as pd
+import matplotlib.pyplot as plt
+import seaborn as sns
+from sklearn.ensemble import RandomForestRegressor
+
+df = pd.DataFrame({
+    'Experience':range(1,16),
+    'Salary':range(25000,55000,2000)
+})
+
+X,y = df[['Experience']],df['Salary']
+
+m = RandomForestRegressor(n_estimators=100,random_state=42)
+m.fit(X,y)
+
+new = pd.DataFrame({'Experience':[9.5]})
+print("Predicted Salary =",round(m.predict(new)[0],2))
+
+df['Predicted Salary'] = m.predict(X)
+sns.scatterplot(data=df,x='Experience',y='Salary')
+sns.lineplot(data=df,x='Experience',y='Predicted Salary',color='red')
+plt.title("Salary Prediction")
+plt.show()

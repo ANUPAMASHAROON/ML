@@ -1,0 +1,28 @@
+import pandas as pd
+import matplotlib.pyplot as plt
+from sklearn.tree import DecisionTreeRegressor, plot_tree
+
+df = pd.DataFrame({
+    'Size':[1500,1800,1200,2100,3000],
+    'Bedrooms':[3,4,2,4,5],
+    'Age':[10,5,15,8,2],
+    'Price':[200000,250000,180000,270000,400000]
+})
+
+X = df[['Size','Bedrooms','Age']]
+y = df['Price']
+
+m = DecisionTreeRegressor(max_depth=3)
+m.fit(X,y)
+
+plot_tree(m, feature_names=X.columns, filled=True)
+plt.show()
+
+new = pd.DataFrame({
+    'Size':[1600,2200,2500],
+    'Bedrooms':[3,4,4],
+    'Age':[8,6,10]
+})
+
+for p in m.predict(new):
+    print("Predicted Price:",p)
